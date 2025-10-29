@@ -1,0 +1,485 @@
+/* --- GOOGLE FONTS --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Zen+Dots:wght@400&display=swap');
+
+/* --- GLOBAL PALETTE & DESIGN VARIABLES --- */
+:root {
+  /* Font Families */
+    --font-main: 'Zen Dots', Inter, sans-serif;
+    --font-secondary: 'Inter', sans-serif;
+
+  /* Crave Color Palette */
+    --crave-creamy-bg: #F4F1DE;         /* Soft creamy white background */
+    --crave-strong-red: #E44F4F;         /* Intense red for craving */
+    --crave-deep-blue: #494f7e;          /* Calm, trustworthy dark blue */
+    --crave-fresh-green: #81B29A;        /* Fresh green, healthy vibes */
+    --crave-warm-yellow: #fdc700;        /* Warm yellow, optimism */
+
+  /* Borders & Shadows */
+    --border-main: var(--crave-strong-red);
+    --shadow-main: 0 6px 24px rgba(228, 79, 79, 0.22);
+    --hero-shadow: 0 5px 20px rgba(242, 204, 143, 0.6);
+    --logo-bg: #FFF5E1CC;
+
+  /* Background gradients */
+    --bg-gradient-start: var(--crave-strong-red);
+    --bg-gradient-middle: var(--crave-warm-yellow);
+    --bg-gradient-end: var(--crave-fresh-green);
+
+  /* Text colors */
+    --text-primary: var(--crave-deep-blue);
+    --text-secondary: var(--crave-fresh-green);
+
+  /* Recommendation box */
+    --recommend-box-bg: linear-gradient(101deg, #ffffff 60%, var(--crave-warm-yellow) 100%);
+    --recommend-border: var(--crave-fresh-green);
+    --recommend-text: var(--crave-strong-red);
+
+  /* Favorite list */
+    --favorite-bg: #FFF9E6;
+    --favorite-border: var(--crave-warm-yellow);
+    --empty-fav-bg: #FFF6EB;
+    --empty-fav-text: var(--crave-strong-red);
+    --empty-fav-border: #F2B7B7;
+}
+
+/* --- GLOBAL RESET & FONT --- */
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: var(--font-secondary);
+    color: var(--text-primary);
+    background-attachment: fixed;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+}
+html, body {
+    width: 100%; height: 100%;
+    overflow-x: hidden;
+    align-items: center;
+}
+
+/* --- MORPHING BACKGROUND --- */
+.morphing-gradient-bg {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+.morphing-gradient-layer {
+    position: absolute; inset: 0; width: 100vw; height: 100vh;
+    background:
+        radial-gradient(ellipse 70% 50% at 28% 22%, var(--crave-warm-yellow) 0%, transparent 75%),
+        radial-gradient(ellipse 60% 38% at 62% 56%, var(--crave-fresh-green) 15%, transparent 85%),
+        radial-gradient(ellipse 45% 58% at 80% 26%, var(--crave-strong-red) 18%, transparent 85%);
+    background-repeat: no-repeat;
+    background-size: 200% 200%;
+    animation: morphing-gradient-move 16s ease-in-out infinite alternate;
+    opacity: 0.92;
+    filter: blur(0.32vw);
+    mix-blend-mode: screen;
+}
+.morphing-noise-layer {
+    position: absolute; inset: 0; width: 100vw; height: 100vh;
+    pointer-events: none; opacity: 0.9; z-index: 1;
+    mix-blend-mode: multiply;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' /></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.4'/></svg>");
+}
+@keyframes morphing-gradient-move {
+    0% {
+        background-position:
+        10% 40%, 60% 10%, 60% 75%;
+    }
+    33% {
+        background-position:
+        30% 70%, 66% 55%, 70% 65%;
+    }
+    70% {
+        background-position:
+        20% 60%, 33% 45%, 40% 32%;
+    }
+    100% {
+        background-position:
+        10% 40%, 60% 10%, 60% 75%;
+    }
+}
+
+/* --- HERO (LOGO + TITLE) --- */
+.hero-title-row {
+    display: flex; align-items: center; justify-content: center; gap: 1.2em;
+    margin-top: 2rem; margin-bottom: 1rem;
+    animation: fadeInDown 1s ease-in-out;
+}
+.hero-logo-img {
+    width: 92px; height: 98px; border-radius: 32% 22% 28% 40% / 26% 18% 28% 32%;
+    box-shadow: var(--hero-shadow);
+    background: var(--logo-bg);
+    padding: 7px; margin-right: 0.1em;
+}
+.hero-title {
+    font-family: var(--font-main);
+    font-weight: 800; 
+    font-size: 6rem;
+    letter-spacing: 0px;
+    background: radial-gradient(circle at bottom, var(--crave-warm-yellow) 1%, var(--crave-deep-blue) 35%, var(--crave-strong-red) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shadow 5s ease-in-out infinite alternate;
+    color: transparent;
+    line-height: 1;
+}
+@keyframes shadow {
+    100% { text-shadow: 8px 1.2px 5px var(--crave-warm-yellow); }
+}
+.logo-section {
+    text-align: center;
+    margin-bottom: 0.6rem;
+    animation: fadeInDown 1s ease-in-out;
+}
+.main-title {
+    font-family: var(--font-secondary);
+    font-size: 6rem; color: var(--crave-strong-red);
+    letter-spacing: 0px;
+    font-weight: 900;
+    animation: fadeInDown 1s ease-in-out;    
+}
+.main-subtitle {
+    font-family: var(--font-secondary);
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--crave-deep-blue);
+    letter-spacing: 0em;
+    animation: fadeInDown 1s ease-in-out;
+}
+
+/* --- SEARCH FORM --- */
+[data-testid="stForm"] {
+    margin-bottom: 2.3em;
+    max-width: 900px;
+    margin-left: auto; margin-right: auto;
+    padding: 2.1em 2.1em 1.2em 2.1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: none !important;
+}
+
+[data-testid="stForm"] > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+[data-testid="stForm"] > div > input {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4px 3px 0px 3px;
+}
+
+div[data-testid="stTextInput"] {
+    margin-bottom: 0.5rem !important;
+    box-shadow: 2px 2px 2px 0px !important;
+    border-radius: 4px !important;
+}
+
+div[data-testid="stTextInput"] > div {
+    height: 60px !important;
+    min-height: auto !important;
+    border-radius: 4px !important;
+    outline: none !important;
+}
+.stTextInput input[type="text"], input[type="text"] {
+    border-radius: 4px !important;
+    background: var(--crave-creamy-bg) !important;
+    font-family: var(--font-secondary) !important;
+    font-size: 1.19rem !important;
+    padding: 1.3em 1.8em !important;
+    font-weight: 600 !important;
+    outline: 0 !important;
+}
+.stTextInput input[type="text"]:focus, input[type="text"]:focus {
+    outline: 0 !important;
+}
+
+/* --- FORM BUTTON --- */
+div[data-testid="stFormSubmitButton"] button  {
+    background: linear-gradient(91deg, var(--crave-strong-red) 15%, var(--crave-warm-yellow) 85%);
+    color: var(--crave-fresh-green) !important;
+    font-family: var(--font-main) !important; font-weight: 800 !important; font-size: 2.32rem !important;
+    border-radius: 4px !important;
+    letter-spacing: 1px;
+    border: 0px !important;
+    box-shadow: 0 6px 24px rgba(228, 79, 79, 0.47) !important;
+    padding: 1.09rem 2.3rem !important;
+    cursor: pointer;
+    margin: 0.1em 35em 0 auto;
+    display: flex;
+    transition: all 0.17s;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+}
+
+div[data-testid="stFormSubmitButton"] button * {
+    font-family: var(--font-main) !important;
+    font-size: 1.2rem !important;
+    letter-spacing: 1.2px !important;
+    text-align: center !important;
+    color: var(--crave-deep-blue) !important;
+}
+div[data-testid="stFormSubmitButton"] button:hover {
+    background: linear-gradient(87deg, var(--crave-warm-yellow), var(--crave-strong-red));
+    color: #fff0c6 !important;
+    box-shadow: 0 7px 23px rgba(242, 204, 143, 0.59) !important;
+    transform: scale(1.028);
+}
+div[data-testid="stFormSubmitButton"] button > div {
+    font-size: 20px !important;
+}
+/* === STYLE "CLEAR ALL" BUTTON IN FAVORITES === */
+div[data-testid="stButton"] {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 1rem !important;
+}
+div[data-testid="stButton"] > button {
+    background: linear-gradient(91deg, var(--crave-strong-red) 15%, var(--crave-warm-yellow) 85%);
+    font-family: var(--font-secondary) !important;
+    font-weight: 800 !important;
+    font-size: 1.1rem !important;
+    border-radius: 4px !important;
+    border: 0px !important;
+    box-shadow: 0 4px 18px rgba(228, 79, 79, 0.4) !important;
+    padding: 0.85rem 1.8rem !important;
+    cursor: pointer;
+    transition: all 0.17s ease;
+    width: 150% !important;          /* Full width button */
+    margin: 10px !important;
+}
+div[data-testid="stButton"] > button:hover {
+    background: linear-gradient(87deg, var(--crave-warm-yellow), var(--crave-strong-red));
+    box-shadow: 0 5px 22px rgba(242, 204, 143, 0.65) !important;
+    transform: scale(1.03);
+}
+div[data-testid="stButton"] > button:active {
+    transform: scale(0.98);
+}
+
+/* General notification wrapper */
+div[data-testid="stNotification"], div[role="alert"] {
+    background: var(--crave-creamy-bg) !important;
+    border-radius: 4px !important;
+    padding: 1rem 1.2rem !important;
+    margin: 1rem auto !important;
+    box-shadow: 0 3px 15px rgba(61, 64, 91, 0.15) !important;
+    font-family: var(--font-secondary) !important;
+    font-size: 1rem !important;
+    width: 90% !important;
+    max-width: 700px !important;
+    text-align: center !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 99999 !important;
+    animation: fadeInDown 0.4s ease;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out !important;
+    transform: translateY(0);
+    pointer-events: auto !important;
+}
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === SPINNER ANIMATION === */
+.loading-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 100 !important;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-main);
+    background: var(--recommend-box-bg);
+    border: 2px solid var(--recommend-border);
+    color: var(--recommend-text) !important;
+    border-radius: 4px;
+    padding: 1.5em 2.3em;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1rem;
+    max-width: 95vw;
+    min-width: 800px;
+    box-shadow: 0 6px 26px 0 rgba(61,64,91,0.15);
+    text-align: center;
+    animation: pulse 2s ease infinite; 
+    pointer-events: none;
+    justify-content: center;
+}
+
+@keyframes pulse{
+    0% { box-shadow: 0 6px 26px 0 var(--crave-deep-blue); }
+    50% { box-shadow: 0 3px 16px 0 var(--crave-strong-red); }
+    100% { box-shadow:  0 6px 26px 0 var(--crave-warm-yellow); }
+}
+
+/* --- RESTAURANT & FAVORITES CARDS --- */
+.food-card, .favorites-container {
+    background: var(--neutral-milk);
+    border-radius: 4px;
+    box-shadow: 1px 2px 4px 0px var(--shadow-main);
+    padding: 20px;
+    transition: all 0.2s ease;
+    text-align: center;
+    animation: fadeInUp 0.4s ease-in-out;
+    border: 1.7px solid var(--recommend-border);
+    color: var(--recommend-text) !important;
+    padding: 0.95em 1.2em;
+    margin: 10px;
+}
+.food-card:hover, .favorites-container:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 12px 12px 0px 0px var(--border-ink);
+}
+.food-card img {
+    border-radius: 4px;
+    border: 2px solid var(--crave-warm-yellow);
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    margin-bottom: 16px;
+}
+.food-card h2 {
+    font-family: var(--font-main);
+    font-size: 1.45rem;
+    color: var(--crave-strong-red);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+.food-card p {
+    font-family: var(--font-secondary);
+    font-size: 1.07rem;
+    color: var(--crave-deep-blue);
+    margin-bottom: 1rem;
+}
+.favorites-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 1.5rem 1rem !important;
+}
+.favorites-container h3 {
+    margin-bottom: 2rem;
+}
+.favorite-item {
+    padding: 20px 6px;
+    background: var(--favorite-bg);
+    border-radius: 4px;
+    margin: 8px;
+    border: 1.7px solid var(--favorite-border);
+    color: var(--crave-deep-blue);
+    font-family: var(--font-secondary);
+    font-size: 1rem;
+    text-align: center;
+    animation: fadeInUp 1s ease-in-out;
+}
+.favorite-item:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 12px 12px 0px 0px var(--border-ink);
+}
+.empty-favorites-message {
+    font-size: 1rem;
+    color: var(--empty-fav-text);
+    background: var(--empty-fav-bg);
+    padding: 20px 6px;
+    border-radius: 4px;
+    border: 1.8px dashed var(--empty-fav-border);
+    margin: 8px;
+    text-align: center;
+}
+.sidebar-title {
+    font-family: var(--font-main) !important;
+    color: var(--crave-strong-red) !important;
+    font-size: 1.4rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 1.5px !important;
+    text-align: center !important;
+    background: linear-gradient(90deg, var(--crave-strong-red), var(--crave-warm-yellow));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1px #0000006d;
+    color: transparent;
+    line-height: 1;
+    padding: 1rem 0 0.8rem 0 !important;
+    margin: 1.1rem !important;
+    border-bottom: 2px solid var(--crave-warm-yellow);
+}
+
+/* --- RECOMMENDATION BANNER --- */
+.cravebot-recommend-box {
+    font-family: var(--font-main);
+    background: var(--recommend-box-bg);
+    border: 1.7px solid var(--recommend-border);
+    color: var(--recommend-text) !important;
+    border-radius: 4px;
+    padding: 0.95em 1.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 10px;
+    text-align: center;
+}
+.cravebot-robot {
+    font-size: 1.18rem;
+}
+.recommend-cuisine {
+    color: #1a994e;
+    margin-left: 8px;
+    font-weight: 600;
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+    animation: fadeInUp 1s ease-in-out;
+}
+.recommend-cuisine:hover {
+    color: #1a994e;
+    margin-left: 8px;
+    font-weight: 600;
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    .logo-section {
+        font-size: 1rem;
+    }
+    .food-card, .favorites-container {
+        max-width: 99vw;
+        padding: 0.8em;
+    }
+    .food-card img {
+        height: 105px;
+    }
+    input[type="text"] {
+        font-size: 0.97rem !important;
+    }
+    div[data-testid="stFormSubmitButton"] button {
+        font-size: 1.05rem !important;
+        padding: 0.8rem 1.4rem !important;
+    }
+    .loading-container {
+        min-width: 80vw;
+        padding: 1em 0.8em;
+        font-size: 1.03rem;
+  }
+}
