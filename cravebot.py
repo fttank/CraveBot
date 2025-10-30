@@ -1,6 +1,7 @@
 import os
 import re
 import time
+from narwhals import col
 import streamlit as st
 import requests
 import random
@@ -55,28 +56,38 @@ def get_valid_image_url(item, api_key, craving):
     return fallback_url
 
 @st.cache_data(ttl=3600, show_spinner=False)
-def search_places(api_key, keyword, location):
-    """Search nearby restaurants using Google Places API."""
+def fetch_places(api_key, keyword, location):
+    """Fetch nearby restaurants (no Streamlit calls)."""
     geo_url = f"https://maps.googleapis.com/maps/api/geocode/json?address={quote(location)}&key={api_key}"
     try:
         resp = requests.get(geo_url).json()
         if not resp.get("results"):
-            st.toast("Could not find that location. Try a different ZIP or area.")
-            time.sleep(1.5)
-            return []
+            return {"error": "invalid_location"}
         lat, lng = resp["results"][0]["geometry"]["location"].values()
-
     except requests.RequestException:
-        st.toast("Failed to connect to the Geocoding API.")
-        time.sleep(1.5)
-        return []
+        return {"error": "geocode_failed"}
 
     url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius=3500&keyword={quote(keyword)}&type=restaurant&key={api_key}"
     try:
-        return requests.get(url).json().get("results", [])
+        data = requests.get(url).json().get("results", [])
+        return {"results": data}
     except requests.RequestException:
-        st.toast("Failed to connect to the Places API.")
+        return {"error": "places_failed"}
+
+
+def search_places(api_key, keyword, location):
+    """Wrapper that handles UI feedback."""
+    data = fetch_places(api_key, keyword, location)
+    if "error" in data:
+        if data["error"] == "invalid_location":
+            st.toast("Could not find that location. Try a different ZIP or area.")
+        elif data["error"] == "geocode_failed":
+            st.toast("Failed to connect to the Geocoding API.")
+        elif data["error"] == "places_failed":
+            st.toast("Failed to connect to the Places API.")
+        time.sleep(2)
         return []
+    return data["results"]
 
 def display_favorites():
     """Show user's saved 'craved' restaurants in the sidebar."""
@@ -185,13 +196,13 @@ with main_col:
                 </div>
             """, unsafe_allow_html=True)
 
-            b_col1, b_col2, b_col3, b_col4, b_col5 = st.columns([2, 1, 1, 1, 2])
+            b_col1,b_col2, b_col3 = st.columns([3, 3, 4])
             with b_col2:
                 if st.button("❤️", help="Crave it!"):
                     st.session_state.favorites.append(item)
                     st.session_state.index += 1
                     st.rerun()
-            with b_col4:
+            with b_col3:
                 if st.button("➡️", help="Next"):
                     st.session_state.index += 1
                     st.rerun()
